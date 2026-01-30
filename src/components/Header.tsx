@@ -293,10 +293,10 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
             {variant === "default" && (
               <div className="flex items-center gap-3 sm:gap-4">
                 {/* Install App Mobile */}
-                {showInstallBtn && (
+                {showInstallPrompt && (
                   <button
-                    onClick={handleInstallClick}
-                    className="text-gray-700 hover:text-primary transition-colors p-2"
+                    onClick={installApp}
+                    className="text-gray-700 hover:text-primary transition-colors p-2 lg:hidden"
                     title="Instalar App"
                   >
                     <Download className="w-5 h-5 sm:w-6 sm:h-6" />
