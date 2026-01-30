@@ -46,7 +46,7 @@ export const HomePage: React.FC = () => {
               className="w-full max-w-[300px] md:max-w-[620px] object-contain drop-shadow-2xl translate-x-[12px] lg:translate-x-[88px]"
             />
             <img
-              src="/Ornament11.png"
+              src="/images/ui/Ornament11.png"
               alt="Ornament"
               className="absolute left-[200px] md:left-[600px] top-[2px] w-[80px] md:w-[140px] h-[80px] md:h-[140px] opacity-70"
             />

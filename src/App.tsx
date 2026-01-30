@@ -7,33 +7,48 @@ import { PWAUpdateManager } from './utils/pwaUpdateManager';
 import { X } from 'lucide-react';
 import './index.css';
 
-const InstallBanner = () => {
+const InstallPopup = () => {
   const { showInstallPrompt, installApp, hidePrompt } = usePWA();
 
   if (!showInstallPrompt) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl p-4 z-50 md:hidden animate-slide-up">
-      <div className="flex items-center gap-4">
-        <div className="bg-primary/10 p-2 rounded-lg shrink-0">
-          <img src="/images/icons/logo-header.svg" alt="Logo" className="w-8 h-8 object-contain" />
-        </div>
-        <div className="flex-1">
-          <h3 className="font-bold text-gray-800 text-sm">Baixe o App Digital Store</h3>
-          <p className="text-xs text-gray-500">Melhor experiência e ofertas exclusivas</p>
-        </div>
-        <button 
-          onClick={installApp}
-          className="bg-primary text-white px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap hover:bg-pink-700 transition-colors"
-        >
-          Baixar
-        </button>
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in">
+      <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm relative animate-scale-up">
         <button 
           onClick={hidePrompt}
-          className="text-gray-400 hover:text-gray-600 p-1"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
         >
-          <X className="w-5 h-5" />
+          <X className="w-6 h-6" />
         </button>
+        
+        <div className="flex flex-col items-center text-center">
+          <div className="bg-primary/10 p-4 rounded-2xl mb-4">
+            <img src="/images/icons/logo-header.svg" alt="Logo" className="w-16 h-16 object-contain" />
+          </div>
+          
+          <h3 className="text-xl font-bold text-gray-800 mb-2">
+            Instale nosso App!
+          </h3>
+          
+          <p className="text-gray-600 mb-6 leading-relaxed">
+            Tenha a melhor experiência de compra, receba ofertas exclusivas e navegue offline.
+          </p>
+          
+          <button 
+            onClick={installApp}
+            className="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-pink-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/30"
+          >
+            Instalar Aplicativo
+          </button>
+          
+          <button 
+            onClick={hidePrompt}
+            className="mt-3 text-sm text-gray-500 font-medium hover:text-gray-800 transition-colors"
+          >
+            Agora não
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -75,7 +90,7 @@ function App() {
               </div>
             </div>
           )}
-          <InstallBanner />
+          <InstallPopup />
           <AppRoutes />
         </CartProvider>
       </FavoritesProvider>

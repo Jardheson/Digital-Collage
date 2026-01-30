@@ -266,7 +266,7 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
 
             {/* Logo */}
             <Link to="/" className="flex-shrink-0">
-              <img src="/logo-header.svg" alt="logo-header" className="h-8 w-auto" />
+              <img src="/images/icons/logo-header.svg" alt="logo-header" className="h-8 w-auto" />
             </Link>
 
             {/* Right Icons */}

@@ -19,9 +19,9 @@ export const ProductListingPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    const newCategory = categoryParam ? [categoryParam] : [];
-    
+    // Avoid updating state if the category is already correct
     setFilters(prev => {
+      const newCategory = categoryParam ? [categoryParam] : [];
       const currentCategory = prev.category || [];
       const isSame = currentCategory.length === newCategory.length && 
                      currentCategory.every((val, index) => val === newCategory[index]);
@@ -30,6 +30,7 @@ export const ProductListingPage: React.FC = () => {
       
       return { ...prev, category: newCategory };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryParam]);
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export const ProductListingPage: React.FC = () => {
     }
 
     return result;
-  }, [products, filters, sortOption]);
+  }, [products, filters, sortOption, filterParam]);
 
   return (
     <div className="bg-light-gray min-h-screen">
