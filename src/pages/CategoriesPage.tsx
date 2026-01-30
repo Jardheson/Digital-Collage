@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 export const CategoriesPage: React.FC = () => {
   const items = [
     { label: 'Camisetas', svg: (
-      <img src="tshirt-_1_.svg" alt="Camisetas" />
+      <img src="/images/icons/tshirt-_1_.svg" alt="Camisetas" />
     ) },
     { label: 'Calças', svg: (
-      <img src="pants.svg" alt="Calças" />
+      <img src="/images/icons/pants.svg" alt="Calças" />
     ) },
     { label: 'Bonés', svg: (
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -16,7 +16,7 @@ export const CategoriesPage: React.FC = () => {
       </svg>
     ) },
     { label: 'Headphones', svg: (
-      <img src="/images/icons/headphones_1.svg" alt="Headphones" />
+      <img src="/images/icons/headphones.svg" alt="Headphones" />
     ) },
     { label: 'Tênis', svg: (
       <img src="/images/icons/sneakers.svg" alt="Tênis" />

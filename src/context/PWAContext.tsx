@@ -4,6 +4,8 @@ interface PWAContextValue {
   showInstallPrompt: boolean;
   installApp: () => Promise<void>;
   hidePrompt: () => void;
+  showManualInstall: boolean;
+  closeManualInstall: () => void;
 }
 
 const PWAContext = createContext<PWAContextValue | undefined>(undefined);
@@ -19,15 +21,17 @@ interface BeforeInstallPromptEvent extends Event {
 
 export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [showInstallPrompt, setShowInstallPrompt] = useState(() => {
-    // Lazy initialization
-    if (typeof window !== 'undefined') {
-      return !window.matchMedia('(display-mode: standalone)').matches;
-    }
-    return false;
-  });
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [showManualInstall, setShowManualInstall] = useState(false);
 
   useEffect(() => {
+    // Check if already installed
+    const isInstalled = window.matchMedia('(display-mode: standalone)').matches;
+    if (isInstalled) {
+      setShowInstallPrompt(false);
+      return;
+    }
+
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
@@ -35,29 +39,40 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     window.addEventListener('beforeinstallprompt', handler);
-
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
-  // Removed the second useEffect that caused the lint error
-
-
   const installApp = async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      setShowInstallPrompt(false);
+    if (deferredPrompt) {
+      // Android / Chrome / Edge
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setShowInstallPrompt(false);
+      }
+      setDeferredPrompt(null);
+    } else {
+      // iOS / Safari / Firefox / Others
+      setShowManualInstall(true);
     }
-    setDeferredPrompt(null);
   };
 
   const hidePrompt = () => {
     setShowInstallPrompt(false);
   };
 
+  const closeManualInstall = () => {
+    setShowManualInstall(false);
+  };
+
   return (
-    <PWAContext.Provider value={{ showInstallPrompt, installApp, hidePrompt }}>
+    <PWAContext.Provider value={{ 
+      showInstallPrompt, 
+      installApp, 
+      hidePrompt,
+      showManualInstall,
+      closeManualInstall
+    }}>
       {children}
     </PWAContext.Provider>
   );

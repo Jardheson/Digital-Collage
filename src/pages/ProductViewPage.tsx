@@ -165,10 +165,10 @@ export const ProductViewPage: React.FC = () => {
 
 
         {/* Related Products */}
-        <div className="mt-20">
-            <div className="flex justify-between items-center mb-8">
-                 <h2 className="text-2xl font-bold text-gray-800">Produtos Relacionados</h2>
-                 <Link to="/products" className="text-primary hover:underline flex items-center gap-1 font-bold">Ver todos <ArrowRight className="w-5 h-5"/></Link>
+        <div className="mt-12 md:mt-20">
+            <div className="flex justify-between items-center mb-6 md:mb-8">
+                 <h2 className="text-xl md:text-2xl font-bold text-gray-800">Produtos Relacionados</h2>
+                 <Link to="/products" className="text-primary hover:underline flex items-center gap-1 font-bold text-sm md:text-base">Ver todos <ArrowRight className="w-4 h-4 md:w-5 md:h-5"/></Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                 {relatedProducts.map((p, idx) => (

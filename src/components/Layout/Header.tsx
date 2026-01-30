@@ -25,7 +25,7 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
     v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
   const { items, total, clear, count } = useCart();
   const { count: favoritesCount } = useFavorites();
-  const { showInstallPrompt, installApp } = usePWA();
+  const { installApp } = usePWA();
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,7 +78,7 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
             <div className="container mx-auto px-6 py-4 flex items-center justify-between">
               {/* Logo */}
               <Link to="/" className="flex-shrink-0">
-                <img src="/logo-header.svg" alt="logo-header" className="h-10 w-auto hover:opacity-80 transition-opacity" />
+                <img src="/images/icons/logo-header.svg" alt="logo-header" className="h-10 w-auto hover:opacity-80 transition-opacity" />
               </Link>
 
               {/* Search Bar */}
@@ -101,16 +101,14 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
               {variant === "default" && (
                 <div className="flex items-center gap-6">
                   {/* Install App */}
-                  {showInstallPrompt && (
-                    <button
-                      onClick={installApp}
-                      className="text-gray-600 hover:text-primary transition-colors flex items-center gap-2 text-sm font-medium"
-                      title="Instalar Aplicativo"
-                    >
-                      <Download className="w-6 h-6" />
-                      <span className="hidden xl:inline">Instalar App</span>
-                    </button>
-                  )}
+                  <button
+                    onClick={installApp}
+                    className="text-gray-600 hover:text-primary transition-colors flex items-center gap-2 text-sm font-medium"
+                    title="Instalar Aplicativo"
+                  >
+                    <Download className="w-6 h-6" />
+                    <span className="hidden xl:inline">Instalar App</span>
+                  </button>
 
                   {/* Wishlist */}
                   <Link
@@ -273,15 +271,13 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
             {variant === "default" && (
               <div className="flex items-center gap-3 sm:gap-4">
                 {/* Install App Mobile */}
-                {showInstallPrompt && (
-                  <button
-                    onClick={installApp}
-                    className="text-gray-700 hover:text-primary transition-colors p-2 lg:hidden"
-                    title="Instalar App"
-                  >
-                    <Download className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </button>
-                )}
+                <button
+                  onClick={installApp}
+                  className="text-gray-700 hover:text-primary transition-colors p-2 lg:hidden"
+                  title="Instalar App"
+                >
+                  <Download className="w-5 h-5 sm:w-6 sm:h-6" />
+                </button>
 
                 {/* Search Icon */}
                 <button

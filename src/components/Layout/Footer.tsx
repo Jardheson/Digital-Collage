@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
         <div className="space-y-3 md:space-y-6 col-span-2 md:col-span-1">
           <div className="flex items-center gap-2 text-lg md:text-2xl font-bold">
             <div className=" text-primary p-1 rounded">
-              <img src="/logo-footer.svg" alt="logo-footer" />
+              <img src="/images/icons/logo-footer.svg" alt="logo-footer" />
             </div>{" "}
            
           </div>

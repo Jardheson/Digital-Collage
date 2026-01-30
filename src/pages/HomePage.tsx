@@ -48,7 +48,7 @@ export const HomePage: React.FC = () => {
             <img
               src="/images/ui/Ornament11.png"
               alt="Ornament"
-              className="absolute left-[200px] md:left-[600px] top-[2px] w-[80px] md:w-[140px] h-[80px] md:h-[140px] opacity-70"
+              className="absolute left-[200px] md:left-[600px] top-[2px] w-[80px] md:w-[140px] h-[80px] md:h-[140px] opacity-70 hidden md:block"
             />
           </div>
         </div>
