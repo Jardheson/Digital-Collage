@@ -34,7 +34,7 @@ export const BottomNav: React.FC = () => {
       path: '/checkout',
       label: 'Carrinho',
       icon: ShoppingCart,
-      badge: Math.min(99, count),
+      badge: count > 0 ? Math.min(99, count) : undefined,
     },
     {
       path: '/orders/info',

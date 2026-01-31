@@ -316,10 +316,12 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
                   className="relative text-primary p-2"
                   title="Carrinho"
                 >
-                  <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
-                  <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                    {Math.min(99, count)}
-                  </span>
+                  <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-[#C92071]" />
+                  {count > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-[#C92071] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                      {Math.min(99, count)}
+                    </span>
+                  )}
                 </Link>
               </div>
             )}
