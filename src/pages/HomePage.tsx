@@ -42,13 +42,14 @@ export const HomePage: React.FC = () => {
           <div className="lg:w-1/2 relative mb-4 lg:mb-0">
             <img
               src="/images/products/White-Sneakers-PNG-Clipart 1.png"
-              alt="Nike Shoe"
+              alt="Tênis Nike Branco em destaque"
               className="w-full max-w-[300px] md:max-w-[620px] object-contain drop-shadow-2xl translate-x-[12px] lg:translate-x-[88px]"
             />
             <img
               src="/images/ui/Ornament11.png"
-              alt="Ornament"
-              className="absolute left-[200px] md:left-[600px] top-[2px] w-[80px] md:w-[140px] h-[80px] md:h-[140px] opacity-70 hidden md:block"
+              alt=""
+              aria-hidden="true"
+              className="absolute left-[200px] md:left-[600px] top-[2px] w-[80px] md:w-[140px] h-[80px] md:h-[140px] opacity-70"
             />
           </div>
         </div>
@@ -75,13 +76,13 @@ export const HomePage: React.FC = () => {
               <h3 className="text-xl md:text-3xl font-bold text-gray-800 w-1/2 relative z-10">
                 Novo drop Supreme
               </h3>
-              <Link to="/products" className="mt-2 md:mt-4 bg-white text-primary font-bold py-1 md:py-2 px-4 md:px-6 rounded text-xs md:text-base hover:bg-gray-100 transition-colors relative z-10 inline-block">
+              <Link to="/products" className="mt-2 md:mt-4 bg-white text-primary font-bold py-1 md:py-2 px-4 md:px-6 rounded text-xs md:text-base hover:bg-gray-100 transition-colors relative z-10 inline-block" aria-label="Comprar Novo drop Supreme">
                 Comprar
               </Link>
               <img
                 src="/images/products/star-wars-storm.png"
                 className="absolute bottom-0 right-0 h-full object-contain group-hover:scale-105 transition-transform"
-                alt="Supreme"
+                alt="Coleção Supreme Star Wars"
               />
             </div>
             <div className="bg-[#D8E3F2] rounded-lg p-4 md:p-6 h-48 md:h-64 relative overflow-hidden group">
@@ -91,13 +92,13 @@ export const HomePage: React.FC = () => {
               <h3 className="text-xl md:text-3xl font-bold text-gray-800 w-1/2 relative z-10">
                 Coleção Adidas
               </h3>
-              <button className="mt-2 md:mt-4 bg-white text-primary font-bold py-1 md:py-2 px-4 md:px-6 rounded text-xs md:text-base hover:bg-gray-100 transition-colors relative z-10">
+              <Link to="/products?brand=Adidas" className="mt-2 md:mt-4 bg-white text-primary font-bold py-1 md:py-2 px-4 md:px-6 rounded text-xs md:text-base hover:bg-gray-100 transition-colors relative z-10 inline-block" aria-label="Comprar Coleção Adidas">
                 Comprar
-              </button>
+              </Link>
               <img
                 src="/images/icons/ddd 1.png"
                 className="absolute bottom-0 right-0 h-full object-contain group-hover:scale-105 transition-transform"
-                alt="Adidas"
+                alt="Tênis Adidas"
               />
             </div>
             <div className="bg-[#D8E3F2] rounded-lg p-4 md:p-6 h-48 md:h-64 relative overflow-hidden group">
@@ -107,13 +108,13 @@ export const HomePage: React.FC = () => {
               <h3 className="text-xl md:text-3xl font-bold text-gray-800 w-1/2 relative z-10">
                 Novo Beats Bass
               </h3>
-              <button className="mt-2 md:mt-4 bg-white text-primary font-bold py-1 md:py-2 px-4 md:px-6 rounded text-xs md:text-base hover:bg-gray-100 transition-colors relative z-10">
+              <Link to="/products?category=Headphones" className="mt-2 md:mt-4 bg-white text-primary font-bold py-1 md:py-2 px-4 md:px-6 rounded text-xs md:text-base hover:bg-gray-100 transition-colors relative z-10 inline-block" aria-label="Comprar Novo Beats Bass">
                 Comprar
-              </button>
+              </Link>
               <img
                 src="/images/products/collection-3.png"
                 className="absolute bottom-0 right-0 h-full object-contain group-hover:scale-105 transition-transform"
-                alt="Beats"
+                alt="Fone de ouvido Beats"
               />
             </div>
           </div>
@@ -123,8 +124,8 @@ export const HomePage: React.FC = () => {
           </h2>
           <div className="flex flex-wrap justify-center gap-4 md:gap-8 lg:gap-16">
             {[
-              { label: "Camisetas", svg: <img src="/images/icons/tshirt-_1_.svg" alt="" /> },
-              { label: "Calças", svg: <img src="/images/icons/pants.svg" alt="" /> },
+              { label: "Camisetas", svg: <img src="/images/icons/tshirt-_1_.svg" alt="Ícone Camisetas" /> },
+              { label: "Calças", svg: <img src="/images/icons/pants.svg" alt="Ícone Calças" /> },
               {
                 label: "Bonés",
                 svg: (
@@ -135,6 +136,8 @@ export const HomePage: React.FC = () => {
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="1.5"
+                    aria-label="Ícone Bonés"
+                    role="img"
                   >
                     <path d="M4 13a8 8 0 0116 0v2H4v-2z" />
                     <path d="M2 15h20" />
@@ -143,9 +146,9 @@ export const HomePage: React.FC = () => {
               },
               {
                 label: "Headphones",
-                svg: <img src="/images/icons/headphones_1.svg" alt="" />,
+                svg: <img src="/images/icons/headphones_1.svg" alt="Ícone Headphones" />,
               },
-              { label: "Tênis", svg: <img src="/images/icons/sneakers.svg" alt="" /> },
+              { label: "Tênis", svg: <img src="/images/icons/sneakers.svg" alt="Ícone Tênis" /> },
             ].map((item, idx) => (
               <Link
                 to={`/products?category=${item.label}`}

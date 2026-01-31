@@ -175,7 +175,7 @@
     "price": 350,
     "priceDiscount": 289.90,
     "rating": 5,
-    "images": ["/produc-image-4.jpeg", "/product-thumb-4.jpeg"],
+    "images": ["/images/products/produc-image-4.jpeg", "/images/products/product-thumb-4.jpeg"],
     "description": "O tênis mais icônico do mundo, Chuck Taylor All Star.",
     "gender": "Unisex",
     "state": "Novo",

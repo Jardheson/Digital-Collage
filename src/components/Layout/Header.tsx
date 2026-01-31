@@ -25,7 +25,7 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
     v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
   const { items, total, clear, count } = useCart();
   const { count: favoritesCount } = useFavorites();
-  const { installApp } = usePWA();
+  const { showInstallPrompt, installApp } = usePWA();
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,28 +70,29 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
       />
 
       {/* Header Principal */}
-      <header className="bg-white shadow-md sticky top-0 z-50 opacity-100">
+      <header className="bg-white shadow-md sticky top-0 z-50">
         {/* Desktop Header */}
         <div className="hidden lg:block">
           {/* Top Bar - Auth & Search */}
           <div className="border-b border-gray-100">
             <div className="container mx-auto px-6 py-4 flex items-center justify-between">
               {/* Logo */}
-              <Link to="/" className="flex-shrink-0">
-                <img src="/images/icons/logo-header.svg" alt="logo-header" className="h-10 w-auto hover:opacity-80 transition-opacity" />
+              <Link to="/" className="flex-shrink-0" aria-label="Ir para página inicial">
+                <img src="/images/icons/logo-header.svg" alt="Digital Store Logo" className="h-10 w-auto hover:opacity-80 transition-opacity" />
               </Link>
 
               {/* Search Bar */}
-              <form onSubmit={handleSearchSubmit} className="flex-1 max-w-md mx-8">
+              <form onSubmit={handleSearchSubmit} className="flex-1 max-w-md mx-8" role="search">
                 <div className="relative group">
                   <input
                     type="text"
                     placeholder="Buscar produtos..."
+                    aria-label="Buscar produtos"
                     className="w-full bg-light-gray rounded-lg py-3 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white transition-all"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
-                  <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+                  <button type="submit" aria-label="Realizar busca" className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
                     <Search className="w-5 h-5" />
                   </button>
                 </div>
@@ -101,20 +102,23 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
               {variant === "default" && (
                 <div className="flex items-center gap-6">
                   {/* Install App */}
-                  <button
-                    onClick={installApp}
-                    className="text-gray-600 hover:text-primary transition-colors flex items-center gap-2 text-sm font-medium"
-                    title="Instalar Aplicativo"
-                  >
-                    <Download className="w-6 h-6" />
-                    <span className="hidden xl:inline">Instalar App</span>
-                  </button>
+                  {showInstallPrompt && (
+                    <button
+                      onClick={installApp}
+                      className="text-gray-600 hover:text-primary transition-colors flex items-center gap-2 text-sm font-medium"
+                      title="Instalar Aplicativo"
+                    >
+                      <Download className="w-6 h-6" />
+                      <span className="hidden xl:inline">Instalar App</span>
+                    </button>
+                  )}
 
                   {/* Wishlist */}
                   <Link
                     to="/wishlist"
                     className="relative text-gray-600 hover:text-primary transition-colors"
                     title="Wishlist"
+                    aria-label="Ir para lista de desejos"
                   >
                     <Heart className="w-6 h-6" />
                     {favoritesCount > 0 && (
@@ -146,6 +150,8 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
                       className="relative text-primary hover:text-secondary transition-colors"
                       onClick={() => setOpenCart(!openCart)}
                       title="Carrinho"
+                      aria-label="Abrir carrinho de compras"
+                      aria-expanded={openCart}
                     >
                       <ShoppingCart className="w-6 h-6" />
                       <span className="absolute -top-3 -right-3 bg-primary text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold">
@@ -153,9 +159,9 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
                       </span>
                     </button>
 
-                    {/* Cart Dropdown */}
+                  {/* Cart Dropdown */}
                   {openCart && (
-                    <div className="absolute right-0 top-14 w-96 bg-white rounded-lg shadow-2xl border border-gray-100 overflow-hidden z-50">
+                    <div className="absolute right-0 top-14 w-80 bg-white rounded-lg shadow-2xl border border-gray-100 overflow-hidden z-50">
                       <div className="p-6">
                         <h3 className="text-xl font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100">
                           Meu Carrinho
@@ -165,18 +171,18 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
                           {items.length > 0 ? (
                             items.map((item) => (
                               <div key={item.id} className="flex gap-4 pb-4">
-                                <div className="w-20 h-20 rounded bg-[#E2E3FF] overflow-hidden flex items-center justify-center shrink-0">
+                                <div className="w-16 h-16 rounded bg-[#E2E3FF] overflow-hidden flex items-center justify-center shrink-0">
                                   <img
                                     src={item.image}
                                     alt={item.name}
-                                    className="w-full h-full object-contain mix-blend-multiply p-2"
+                                    className="w-full h-full object-contain mix-blend-multiply p-1"
                                   />
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <p className="text-sm font-bold text-gray-800 line-clamp-2 leading-tight mb-1">
                                     {item.name}
                                   </p>
-                                  <div className="flex items-center gap-2 mt-2">
+                                  <div className="flex items-center gap-2 mt-1">
                                     <span className="text-lg font-bold text-gray-900">{formatBRL(item.price)}</span>
                                     <span className="text-xs text-gray-400 line-through">{formatBRL(item.price)}</span>
                                   </div>
@@ -263,21 +269,23 @@ export const Header: React.FC<HeaderProps> = ({ variant = "default" }) => {
             </button>
 
             {/* Logo */}
-            <Link to="/" className="flex-shrink-0">
-              <img src="/images/icons/logo-header.svg" alt="logo-header" className="h-8 w-auto" />
+            <Link to="/" className="flex-shrink-0" aria-label="Ir para página inicial">
+              <img src="/images/icons/logo-header.svg" alt="Digital Store Logo" className="h-8 w-auto" />
             </Link>
 
             {/* Right Icons */}
             {variant === "default" && (
               <div className="flex items-center gap-3 sm:gap-4">
                 {/* Install App Mobile */}
-                <button
-                  onClick={installApp}
-                  className="text-gray-700 hover:text-primary transition-colors p-2 lg:hidden"
-                  title="Instalar App"
-                >
-                  <Download className="w-5 h-5 sm:w-6 sm:h-6" />
-                </button>
+                {showInstallPrompt && (
+                  <button
+                    onClick={installApp}
+                    className="text-gray-700 hover:text-primary transition-colors p-2 lg:hidden"
+                    title="Instalar App"
+                  >
+                    <Download className="w-5 h-5 sm:w-6 sm:h-6" />
+                  </button>
+                )}
 
                 {/* Search Icon */}
                 <button

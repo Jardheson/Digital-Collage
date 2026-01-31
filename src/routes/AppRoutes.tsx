@@ -20,6 +20,7 @@ import { FavoritesPage } from '../pages/FavoritesPage';
 import { PaymentMethodsPage } from '../pages/PaymentMethodsPage';
 import { ForgotPasswordPage } from '../pages/ForgotPasswordPage';
 import { OrderDetailsPage } from '../pages/OrderDetailsPage';
+import { InstallPage } from '../pages/InstallPage';
 import { ScrollToTop } from '../components/Layout/ScrollToTop';
 
 export const AppRoutes: React.FC = () => {
@@ -46,6 +47,7 @@ export const AppRoutes: React.FC = () => {
           <Route path="orders" element={<MyOrdersPage />} />
           <Route path="orders/:id" element={<OrderDetailsPage />} />
           <Route path="orders/info" element={<MyInfoPage />} />
+          <Route path="install" element={<InstallPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="checkout/success" element={<SuccessPage />} />
           <Route path="*" element={<div>Página não encontrada</div>} />

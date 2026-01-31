@@ -28,9 +28,17 @@ export const CheckoutPage: React.FC = () => {
   }, []);
 
   const handlePay = () => {
-    // Navigate to success or payment flow
+    // Passar os dados da compra para a página de sucesso
+    navigate('/checkout/success', {
+      state: {
+        product: {
+          name: items[0]?.name || 'Produto Exemplo',
+          image: items[0]?.image || '',
+          total: total
+        }
+      }
+    });
     clear();
-    navigate('/checkout/success');
   };
 
   return (

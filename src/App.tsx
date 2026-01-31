@@ -4,118 +4,62 @@ import { CartProvider } from './context/CartContext';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { PWAProvider, usePWA } from './context/PWAContext';
 import { PWAUpdateManager } from './utils/pwaUpdateManager';
-import { X } from 'lucide-react';
+import { X, WifiOff } from 'lucide-react';
 import './index.css';
 
-import { Share, PlusSquare } from 'lucide-react';
+const OfflineBanner = () => {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-const InstallPopup = () => {
-  const { showInstallPrompt, installApp, hidePrompt, showManualInstall, closeManualInstall } = usePWA();
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
 
-  if (showManualInstall) {
-    return (
-      <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 animate-fade-in backdrop-blur-sm">
-        <div className="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-sm relative animate-scale-up overflow-hidden">
-          <button 
-            onClick={closeManualInstall}
-            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
-          >
-            <X className="w-6 h-6" />
-          </button>
-          
-          <div className="flex flex-col items-center text-center relative z-0">
-            <div className="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-               <img src="/images/icons/logo-header.svg" alt="Logo" className="w-12 h-12 object-contain" />
-            </div>
-            
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">
-              Instalar no iPhone
-            </h3>
-            <p className="text-gray-500 mb-8 text-sm">Siga os passos abaixo para instalar</p>
-            
-            <div className="w-full space-y-4 mb-8">
-              <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl text-left transition-colors hover:bg-gray-100">
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0 text-blue-500">
-                  <Share className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-0.5">Passo 1</p>
-                  <p className="text-sm text-gray-700 font-medium">Toque em <span className="text-blue-600 font-bold">Compartilhar</span></p>
-                </div>
-              </div>
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
 
-              <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl text-left transition-colors hover:bg-gray-100">
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0 text-gray-700">
-                  <PlusSquare className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-0.5">Passo 2</p>
-                  <p className="text-sm text-gray-700 font-medium">Selecione <span className="font-bold">Início</span></p>
-                </div>
-              </div>
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
-              <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl text-left transition-colors hover:bg-gray-100">
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0 text-gray-700">
-                  <span className="font-bold text-lg">Add</span>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-0.5">Passo 3</p>
-                  <p className="text-sm text-gray-700 font-medium">Confirme em <span className="font-bold">Adicionar</span></p>
-                </div>
-              </div>
-            </div>
-            
-            <button 
-              onClick={closeManualInstall}
-              className="w-full bg-primary text-white font-bold py-3.5 px-6 rounded-xl hover:bg-pink-700 transition-all transform active:scale-[0.98] shadow-lg shadow-primary/20"
-            >
-              Entendi
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  if (isOnline) return null;
+
+  return (
+    <div className="bg-gray-800 text-white text-center py-2 px-4 text-sm font-medium flex items-center justify-center gap-2 animate-pulse">
+      <WifiOff className="w-4 h-4" />
+      Você está offline. Algumas funcionalidades podem estar limitadas.
+    </div>
+  );
+};
+
+const InstallBanner = () => {
+  const { showInstallPrompt, installApp, hidePrompt } = usePWA();
 
   if (!showInstallPrompt) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in">
-      <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm relative animate-scale-up">
+    <div className="fixed bottom-[80px] left-0 right-0 bg-white border-t border-gray-200 shadow-2xl p-4 z-50 md:hidden animate-slide-up safe-area-bottom">
+      <div className="flex items-center gap-4">
+        <div className="bg-primary/10 p-2 rounded-lg shrink-0">
+          <img src="/images/icons/logo-header.svg" alt="Logo" className="w-8 h-8 object-contain" />
+        </div>
+        <div className="flex-1">
+          <h3 className="font-bold text-gray-800 text-sm">Baixe o App Digital Store</h3>
+          <p className="text-xs text-gray-500">Melhor experiência e ofertas exclusivas</p>
+        </div>
+        <button 
+          onClick={installApp}
+          className="bg-primary text-white px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap hover:bg-pink-700 transition-colors"
+        >
+          Baixar
+        </button>
         <button 
           onClick={hidePrompt}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+          className="text-gray-400 hover:text-gray-600 p-1"
         >
-          <X className="w-6 h-6" />
+          <X className="w-5 h-5" />
         </button>
-        
-        <div className="flex flex-col items-center text-center">
-          <div className="bg-primary/10 p-4 rounded-2xl mb-4">
-            <img src="/images/icons/logo-header.svg" alt="Logo" className="w-16 h-16 object-contain" />
-          </div>
-          
-          <h3 className="text-xl font-bold text-gray-800 mb-2">
-            Instale nosso App!
-          </h3>
-          
-          <p className="text-gray-600 mb-6 leading-relaxed">
-            Tenha a melhor experiência de compra, receba ofertas exclusivas e navegue offline.
-          </p>
-          
-          <button 
-            onClick={installApp}
-            className="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-pink-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/30"
-          >
-            Instalar Aplicativo
-          </button>
-          
-          <button 
-            onClick={hidePrompt}
-            className="mt-3 text-sm text-gray-500 font-medium hover:text-gray-800 transition-colors"
-          >
-            Agora não
-          </button>
-        </div>
       </div>
     </div>
   );
@@ -157,7 +101,8 @@ function App() {
               </div>
             </div>
           )}
-          <InstallPopup />
+          <InstallBanner />
+          <OfflineBanner />
           <AppRoutes />
         </CartProvider>
       </FavoritesProvider>

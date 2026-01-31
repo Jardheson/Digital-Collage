@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
         <div className="space-y-3 md:space-y-6 col-span-2 md:col-span-1">
           <div className="flex items-center gap-2 text-lg md:text-2xl font-bold">
             <div className=" text-primary p-1 rounded">
-              <img src="/images/icons/logo-footer.svg" alt="logo-footer" />
+              <img src="/images/icons/logo-footer.svg" alt="Digital Store Logo Footer" />
             </div>{" "}
            
           </div>
@@ -18,14 +18,14 @@ export const Footer: React.FC = () => {
           </p>
           <div className="flex gap-3 md:gap-4">
             {/* Social Icons Placeholders */}
-            <div className="w-5 h-5 md:w-6 md:h-6 rounded-full">
-              <img src="/images/icons/Facebook.svg" alt="" />
+            <div className="w-5 h-5 md:w-6 md:h-6 rounded-full" aria-label="Facebook">
+              <img src="/images/icons/Facebook.svg" alt="Facebook" />
             </div>
-            <div className="w-5 h-5 md:w-6 md:h-6 rounded-full">
-              <img src="/images/icons/Instagram.svg" alt="" />
+            <div className="w-5 h-5 md:w-6 md:h-6 rounded-full" aria-label="Instagram">
+              <img src="/images/icons/Instagram.svg" alt="Instagram" />
             </div>
-            <div className="w-5 h-5 md:w-6 md:h-6 rounded-full">
-              <img src="/images/icons/Twitter.svg" alt="" />
+            <div className="w-5 h-5 md:w-6 md:h-6 rounded-full" aria-label="Twitter">
+              <img src="/images/icons/Twitter.svg" alt="Twitter" />
             </div>
           </div>
         </div>
@@ -68,6 +68,11 @@ export const Footer: React.FC = () => {
             <li>
               <Link to="/orders/payment-methods" className="hover:text-primary">
                 Métodos de Pagamento
+              </Link>
+            </li>
+            <li>
+              <Link to="/install" className="hover:text-primary">
+                Instalar App
               </Link>
             </li>
           </ul>

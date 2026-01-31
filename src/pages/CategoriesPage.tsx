@@ -16,10 +16,10 @@ export const CategoriesPage: React.FC = () => {
       </svg>
     ) },
     { label: 'Headphones', svg: (
-      <img src="/images/icons/headphones.svg" alt="Headphones" />
+      <img src="/images/icons/headphones_1.svg" alt="Ícone Headphones" />
     ) },
     { label: 'Tênis', svg: (
-      <img src="/images/icons/sneakers.svg" alt="Tênis" />
+      <img src="/images/icons/sneakers.svg" alt="Ícone Tênis" />
     ) },
   ];
 

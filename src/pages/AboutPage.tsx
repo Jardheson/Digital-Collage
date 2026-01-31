@@ -29,7 +29,7 @@ export const AboutPage: React.FC = () => {
                     <div className="bg-white rounded-lg shadow-lg p-8 max-w-md">
                         <div className="text-center">
                             <div className="w-20 h-20  rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-white text-2xl font-bold"><img src="/images/icons/Logo.svg" alt="Logo"/></span>
+                                <span className="text-white text-2xl font-bold"><img src="/Logo.svg" alt="Logo"/></span>
                             </div>
                             <h3 className="text-xl font-bold text-gray-800 mb-2">Drip Store</h3>
                             <p className="text-gray-600 text-sm">
