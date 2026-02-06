@@ -20,7 +20,7 @@ A interface foi projetada com foco em usabilidade e conversão, utilizando uma p
 ### � Mobile View
 Experiência otimizada para dispositivos móveis com navegação simplificada e elementos de toque amigáveis.
 
-<img width="300" height="500" alt="iPhone-XR-2018-traefbx94igd vercel app" src="https://github.com/user-attachments/assets/d458a7ab-1c6d-4bae-8b48-afd7dfa735d0" />
+<img width="250" height="500" alt="iPhone-XR-2018-traefbx94igd vercel app" src="https://github.com/user-attachments/assets/d458a7ab-1c6d-4bae-8b48-afd7dfa735d0" />
 
 **Destaques da Interface Mobile:**
 *   **Cabeçalho:** Menu hambúrguer acessível, busca rápida e carrinho sempre visível.
