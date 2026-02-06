@@ -20,11 +20,11 @@ A interface foi projetada com foco em usabilidade e conversão, utilizando uma p
 ### � Mobile View
 Experiência otimizada para dispositivos móveis com navegação simplificada e elementos de toque amigáveis.
 
-![Mobile View](https://github.com/digitalcollegebhte/projeto-digital-store/blob/main/assets/mobile-home.png?raw=true)
-*(Exemplo ilustrativo - Substitua pelo link real da sua imagem)*
+<img width="844" height="1668" alt="iPhone-XR-2018-traefbx94igd vercel app" src="https://github.com/user-attachments/assets/d458a7ab-1c6d-4bae-8b48-afd7dfa735d0" />
 
 **Destaques da Interface Mobile:**
 *   **Cabeçalho:** Menu hambúrguer acessível, busca rápida e carrinho sempre visível.
+
 *   **Banner Promocional:** Destaque visual com imagem de produto (ex: Sapato Oxford Verde) e copy persuasiva ("Queima de estoque Nike 🔥").
 *   **Navegação Inferior (Tab Bar):** Acesso rápido às seções principais: Home (ativo em Rosa), Buscar, Favoritos, Carrinho e Perfil.
 *   **Identidade Visual:** Uso estratégico da cor primária (Rosa Magenta) para indicar estado ativo e ações principais.
@@ -32,8 +32,7 @@ Experiência otimizada para dispositivos móveis com navegação simplificada e 
 ### 💻 Desktop View
 Layout responsivo que aproveita o espaço de tela para exibir mais informações e facilitar a navegação por categorias.
 
-![Desktop View](https://github.com/digitalcollegebhte/projeto-digital-store/blob/main/assets/desktop-home.png?raw=true)
-*(Exemplo ilustrativo - Substitua pelo link real da sua imagem)*
+<img width="3797" height="1816" alt="Captura de tela 2026-02-06 102523" src="https://github.com/user-attachments/assets/7ab08f3b-a719-43a6-833f-c3137c3b6986" />
 
 **Destaques da Interface Desktop:**
 *   **Cabeçalho Expandido:** Barra de busca centralizada, acesso direto a "Minha Conta" e "Meus Pedidos".
