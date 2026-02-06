@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, X } from 'lucide-react';
+import React, { useState } from "react";
+import { Search, X } from "lucide-react";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -12,12 +12,12 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   onClose,
   onSearch,
 }) => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   const handleSearch = () => {
     if (query.trim()) {
       onSearch(query);
-      setQuery('');
+      setQuery("");
       onClose();
     }
   };
@@ -35,7 +35,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                 placeholder="Pesquisar produtos..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                 autoFocus
                 className="w-full bg-light-gray rounded-full py-3 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
@@ -50,19 +50,18 @@ export const SearchModal: React.FC<SearchModalProps> = ({
             </button>
           </div>
 
-          {/* Suggested searches or recent */}
           <div className="mt-6">
             <div className="text-sm font-bold text-gray-800 mb-4">
               Categorias Populares
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {[
-                'Eletrônicos',
-                'Roupas',
-                'Sapatos',
-                'Acessórios',
-                'Casa',
-                'Esportes',
+                "Eletrônicos",
+                "Roupas",
+                "Sapatos",
+                "Acessórios",
+                "Casa",
+                "Esportes",
               ].map((category) => (
                 <button
                   key={category}

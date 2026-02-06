@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
-import { AppRoutes } from './routes/AppRoutes';
-import { CartProvider } from './context/CartContext';
-import { FavoritesProvider } from './context/FavoritesContext';
-import { PWAProvider, usePWA } from './context/PWAContext';
-import { PWAUpdateManager } from './utils/pwaUpdateManager';
-import { SplashScreen } from './components/UI/SplashScreen';
-import { X, WifiOff } from 'lucide-react';
-import './index.css';
+import { useEffect, useState } from "react";
+import { AppRoutes } from "./routes/AppRoutes";
+import { CartProvider } from "./context/CartContext";
+import { FavoritesProvider } from "./context/FavoritesContext";
+import { PWAProvider, usePWA } from "./context/PWAContext";
+import { PWAUpdateManager } from "./utils/pwaUpdateManager";
+import { SplashScreen } from "./components/UI/SplashScreen";
+import { X, WifiOff } from "lucide-react";
+import { useSettings, SettingsProvider } from "./context/SettingsContext";
+import "./index.css";
 
 const OfflineBanner = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -15,12 +16,12 @@ const OfflineBanner = () => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
   }, []);
 
@@ -36,26 +37,36 @@ const OfflineBanner = () => {
 
 const InstallBanner = () => {
   const { showInstallPrompt, installApp, hidePrompt } = usePWA();
+  const { settings } = useSettings();
+  const { pwa } = settings;
 
-  if (!showInstallPrompt) return null;
+  if (!showInstallPrompt || !pwa.enabled) return null;
 
   return (
     <div className="fixed bottom-[80px] left-0 right-0 bg-white border-t border-gray-200 shadow-2xl p-4 z-50 md:hidden animate-slide-up safe-area-bottom">
       <div className="flex items-center gap-4">
         <div className="bg-primary/10 p-2 rounded-lg shrink-0">
-          <img src="/images/icons/logo-header.svg" alt="Logo" className="w-8 h-8 object-contain" />
+          <img
+            src={pwa.iconUrl || settings.logoUrl}
+            alt="Logo"
+            className="w-8 h-8 object-contain"
+          />
         </div>
         <div className="flex-1">
-          <h3 className="font-bold text-gray-800 text-sm">Baixe o App Digital Store</h3>
-          <p className="text-xs text-gray-500">Melhor experiência e ofertas exclusivas</p>
+          <h3 className="font-bold text-gray-800 text-sm">
+            {pwa.installBanner.title}
+          </h3>
+          <p className="text-xs text-gray-500">
+            {pwa.installBanner.description}
+          </p>
         </div>
-        <button 
+        <button
           onClick={installApp}
           className="bg-primary text-white px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap hover:bg-pink-700 transition-colors"
         >
-          Baixar
+          {pwa.installBanner.buttonText}
         </button>
-        <button 
+        <button
           onClick={hidePrompt}
           className="text-gray-400 hover:text-gray-600 p-1"
         >
@@ -86,33 +97,39 @@ function App() {
   return (
     <>
       {isLoading && <SplashScreen onFinish={() => setIsLoading(false)} />}
-      <PWAProvider>
-        <FavoritesProvider>
-          <CartProvider>
-            {hasUpdate && (
-            <div className="fixed bottom-20 md:bottom-4 right-4 bg-primary text-white p-4 rounded-lg shadow-lg z-50 max-w-sm animate-bounce">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="font-bold">Nova versão disponível!</p>
-                  <p className="text-sm text-gray-100 mt-1">Atualize para aproveitar as melhores novidades.</p>
+      <SettingsProvider>
+        <PWAProvider>
+          <FavoritesProvider>
+            <CartProvider>
+              {hasUpdate && (
+                <div className="fixed bottom-20 md:bottom-4 right-4 bg-primary text-white p-4 rounded-lg shadow-lg z-50 max-w-sm animate-bounce">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="font-bold">Nova versão disponível!</p>
+                      <p className="text-sm text-gray-100 mt-1">
+                        Atualize para aproveitar as melhores novidades.
+                      </p>
+                    </div>
+                    <button
+                      onClick={handleUpdate}
+                      className="ml-4 bg-white text-primary px-4 py-2 rounded font-bold text-sm hover:bg-gray-100 transition-colors whitespace-nowrap"
+                    >
+                      Atualizar
+                    </button>
+                  </div>
                 </div>
-                <button 
-                  onClick={handleUpdate}
-                  className="ml-4 bg-white text-primary px-4 py-2 rounded font-bold text-sm hover:bg-gray-100 transition-colors whitespace-nowrap"
-                >
-                  Atualizar
-                </button>
+              )}
+              <InstallBanner />
+              <OfflineBanner />
+              <div
+                className={`${isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-700"}`}
+              >
+                <AppRoutes />
               </div>
-            </div>
-          )}
-            <InstallBanner />
-            <OfflineBanner />
-            <div className={`${isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-700'}`}>
-              <AppRoutes />
-            </div>
-          </CartProvider>
-        </FavoritesProvider>
-      </PWAProvider>
+            </CartProvider>
+          </FavoritesProvider>
+        </PWAProvider>
+      </SettingsProvider>
     </>
   );
 }

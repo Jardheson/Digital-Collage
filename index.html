@@ -6,19 +6,24 @@
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#E91E63" />
-    <meta name="description" content="Digital Store - Sua loja online de roupas e acessórios" />
+    <meta
+      name="description"
+      content="Digital Store - Sua loja online de roupas e acessórios"
+    />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
     <meta name="apple-mobile-web-app-title" content="Digital Store" />
     <link rel="apple-touch-icon" href="/images/icons/Logo-D.png" />
     <title>Digital Store</title>
     <script>
-      // Capture beforeinstallprompt event early
       window.deferredPrompt = null;
-      window.addEventListener('beforeinstallprompt', (e) => {
+      window.addEventListener("beforeinstallprompt", (e) => {
         e.preventDefault();
         window.deferredPrompt = e;
-        console.log('PWA Install Prompt captured globally');
+        console.log("PWA Install Prompt captured globally");
       });
     </script>
   </head>

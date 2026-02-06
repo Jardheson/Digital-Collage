@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import type { ReactNode, FC } from 'react';
-import type { Product } from '../types/Product';
+import { createContext, useContext, useState, useEffect } from "react";
+import type { ReactNode, FC } from "react";
+import type { Product } from "../types/Product";
 
 interface FavoritesContextType {
   favorites: Product[];
@@ -11,27 +11,31 @@ interface FavoritesContextType {
   count: number;
 }
 
-const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
+const FavoritesContext = createContext<FavoritesContextType | undefined>(
+  undefined,
+);
 
-export const FavoritesProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const FavoritesProvider: FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [favorites, setFavorites] = useState<Product[]>(() => {
-    if (typeof window === 'undefined') return [];
+    if (typeof window === "undefined") return [];
     try {
-      const stored = localStorage.getItem('favorites');
+      const stored = localStorage.getItem("favorites");
       const parsed = stored ? JSON.parse(stored) : [];
       return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
-      console.error('Failed to parse favorites from localStorage:', error);
+      console.error("Failed to parse favorites from localStorage:", error);
       return [];
     }
   });
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       try {
-        localStorage.setItem('favorites', JSON.stringify(favorites));
+        localStorage.setItem("favorites", JSON.stringify(favorites));
       } catch (error) {
-        console.error('Failed to save favorites to localStorage:', error);
+        console.error("Failed to save favorites to localStorage:", error);
       }
     }
   }, [favorites]);
@@ -78,7 +82,7 @@ export const FavoritesProvider: FC<{ children: ReactNode }> = ({ children }) => 
 export const useFavorites = () => {
   const context = useContext(FavoritesContext);
   if (context === undefined) {
-    throw new Error('useFavorites must be used within a FavoritesProvider');
+    throw new Error("useFavorites must be used within a FavoritesProvider");
   }
   return context;
 };

@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#C92071",
-        secondary: "#B5B6F2", // Example from image palette inference
+        primary: "var(--color-primary)",
+        secondary: "var(--color-secondary)",
         dark: "#1F1F1F",
         light: "#F5F5F5",
         "gray-text": "#474747",

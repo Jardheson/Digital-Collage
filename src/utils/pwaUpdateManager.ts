@@ -1,4 +1,4 @@
-import { registerSW } from 'virtual:pwa-register';
+import { registerSW } from "virtual:pwa-register";
 
 // Gerenciador de atualização do PWA usando vite-plugin-pwa
 export class PWAUpdateManager {
@@ -16,8 +16,8 @@ export class PWAUpdateManager {
         // App ready for offline use
       },
       onRegisterError(error) {
-        console.error('Erro ao registrar Service Worker:', error);
-      }
+        console.error("Erro ao registrar Service Worker:", error);
+      },
     });
   }
 

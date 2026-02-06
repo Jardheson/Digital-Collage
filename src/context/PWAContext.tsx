@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useSettings } from "./SettingsContext";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
   readonly userChoice: Promise<{
-    outcome: 'accepted' | 'dismissed';
+    outcome: "accepted" | "dismissed";
     platform: string;
   }>;
   prompt(): Promise<void>;
@@ -23,42 +24,59 @@ declare global {
   }
 }
 
-export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const { settings } = useSettings();
 
   useEffect(() => {
-    // Handler for the event
     const handleBeforeInstallPrompt = (e: Event) => {
       const promptEvent = e as BeforeInstallPromptEvent;
       promptEvent.preventDefault();
       setDeferredPrompt(promptEvent);
-      
-      if (!window.matchMedia('(display-mode: standalone)').matches) {
+
+      if (
+        !window.matchMedia("(display-mode: standalone)").matches &&
+        settings.pwa.enabled
+      ) {
         setShowInstallPrompt(true);
       }
     };
 
-    // Check for globally captured event
     if (window.deferredPrompt) {
       handleBeforeInstallPrompt(window.deferredPrompt);
-      // Don't clear it immediately to be safe with React Strict Mode
-      // window.deferredPrompt = null; 
     }
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
-    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-  }, []);
+    return () =>
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt,
+      );
+  }, [settings.pwa.enabled]);
+
+  // Effect to handle toggle change when prompt is already deferred
+  useEffect(() => {
+    if (deferredPrompt && !window.matchMedia("(display-mode: standalone)").matches) {
+      if (settings.pwa.enabled) {
+        setShowInstallPrompt(true);
+      } else {
+        setShowInstallPrompt(false);
+      }
+    }
+  }, [settings.pwa.enabled, deferredPrompt]);
 
   const installApp = async () => {
     if (!deferredPrompt) return;
-    
+
     await deferredPrompt.prompt();
-    
+
     await deferredPrompt.userChoice;
-    
-    // Always hide the prompt after choice, as the event cannot be reused
+
     setShowInstallPrompt(false);
     setDeferredPrompt(null);
   };
@@ -76,6 +94,6 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
 export const usePWA = (): PWAContextValue => {
   const ctx = useContext(PWAContext);
-  if (!ctx) throw new Error('usePWA must be used within PWAProvider');
+  if (!ctx) throw new Error("usePWA must be used within PWAProvider");
   return ctx;
 };
