@@ -191,26 +191,31 @@ const defaultSettings: SiteSettings = {
     {
       id: 1,
       name: "Camisetas",
-      image: "/images/icons/tshirt-_1_.svg",
+      image: "/images/icons/camiseta.svg",
       status: "Ativo",
     },
     {
       id: 2,
       name: "Calças",
-      image: "/images/icons/pants.svg",
+      image: "/images/icons/calca.svg",
       status: "Ativo",
     },
-    { id: 3, name: "Bonés", image: "/images/icons/cap.svg", status: "Ativo" },
+    {
+      id: 3,
+      name: "Bonés",
+      image: "/images/icons/bone-_2_.svg",
+      status: "Ativo",
+    },
     {
       id: 4,
       name: "Headphones",
-      image: "/images/icons/headphones_1.svg",
+      image: "/images/icons/headphones.svg",
       status: "Ativo",
     },
     {
       id: 5,
       name: "Tênis",
-      image: "/images/icons/sneakers.svg",
+      image: "/images/icons/tenis.svg",
       status: "Ativo",
     },
   ],
@@ -262,8 +267,8 @@ const defaultSettings: SiteSettings = {
     },
     socialAuth: {
       text: "Ou faça login com",
-      gmailIcon: "/images/icons/logo.png",
-      facebookIcon: "/images/icons/Facebook-criar-conta.svg",
+      gmailIcon: "/images/icons/gmail.svg",
+      facebookIcon: "/images/icons/facebookk.svg",
     },
   },
   orders: [

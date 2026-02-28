@@ -103,7 +103,7 @@ export default defineConfig({
   ],
   server: {
     host: true,
-    port: 3030,
+    port: 2040,
     strictPort: false,
     headers: {
       "Service-Worker-Allowed": "/",
