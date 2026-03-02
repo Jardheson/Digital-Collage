@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Save, Edit, Trash2, Plus, Upload, X } from 'lucide-react';
 import { useSettings } from '../../context/SettingsContext';
+import { saveFeaturedCollection, deleteFeaturedCollection } from '../../services/settings';
 import type { FeaturedCollection } from '../../context/SettingsContext';
 
 export const FeaturedCollectionsPage: React.FC = () => {
-  const { settings, updateSettings } = useSettings();
+  const { settings, refreshSettings } = useSettings();
   const [collections, setCollections] = useState<FeaturedCollection[]>(settings.featuredCollections || []);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCollection, setEditingCollection] = useState<FeaturedCollection | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
   
   // Form State
   const [formData, setFormData] = useState<Partial<FeaturedCollection>>({
@@ -51,38 +53,54 @@ export const FeaturedCollectionsPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSaving(true);
     
-    let updatedCollections;
-    if (editingCollection) {
-      updatedCollections = collections.map(col => 
-        col.id === editingCollection.id ? { ...col, ...formData } as FeaturedCollection : col
-      );
-    } else {
-      const newCollection: FeaturedCollection = {
-        id: Date.now(),
-        title: formData.title || 'Nova Coleção',
-        discount: formData.discount || 0,
-        image: formData.image || '',
-        link: formData.link || '/products',
-        linkText: formData.linkText || 'Comprar'
-      };
-      updatedCollections = [...collections, newCollection];
+    try {
+      if (editingCollection) {
+        await saveFeaturedCollection({
+            ...editingCollection,
+            ...formData
+        } as FeaturedCollection);
+      } else {
+        const newCollection: FeaturedCollection = {
+          id: Date.now(), // Ignored by backend if using heuristic
+          title: formData.title || 'Nova Coleção',
+          discount: formData.discount || 0,
+          image: formData.image || '',
+          link: formData.link || '/products',
+          linkText: formData.linkText || 'Comprar'
+        };
+        await saveFeaturedCollection(newCollection);
+      }
+      
+      await refreshSettings();
+      handleCloseModal();
+    } catch (error) {
+      console.error('Failed to save featured collection:', error);
+      alert('Erro ao salvar coleção');
+    } finally {
+      setIsSaving(false);
     }
-    
-    setCollections(updatedCollections);
-    updateSettings({ featuredCollections: updatedCollections });
-    handleCloseModal();
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm('Tem certeza que deseja excluir esta coleção?')) {
-      const updatedCollections = collections.filter(col => col.id !== id);
-      setCollections(updatedCollections);
-      updateSettings({ featuredCollections: updatedCollections });
+      try {
+        await deleteFeaturedCollection(id);
+        await refreshSettings();
+      } catch (error) {
+        console.error('Failed to delete featured collection:', error);
+        alert('Erro ao excluir coleção');
+      }
     }
   };
+  
+  // Sync state
+  React.useEffect(() => {
+      setCollections(settings.featuredCollections || []);
+  }, [settings.featuredCollections]);
 
   return (
     <div className="space-y-6">

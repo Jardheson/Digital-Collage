@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Edit, Trash2, Plus, Search, X, Save, Upload } from 'lucide-react';
 import { useSettings } from '../../context/SettingsContext';
+import { saveCategory, deleteCategory } from '../../services/settings';
 import type { Category } from '../../context/SettingsContext';
 
 export const CategoriesPage: React.FC = () => {
-  const { settings, updateSettings } = useSettings();
+  const { settings, refreshSettings } = useSettings();
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
   
   // Form State
   const [formData, setFormData] = useState<Partial<Category>>({
@@ -49,33 +51,47 @@ export const CategoriesPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSaving(true);
     
-    if (editingCategory) {
-      // Edit
-      const updatedCategories = categories.map(cat => 
-        cat.id === editingCategory.id ? { ...cat, ...formData } as Category : cat
-      );
-      updateSettings({ categories: updatedCategories });
-    } else {
-      // Add
-      const newCategory: Category = {
-        id: Date.now(),
-        name: formData.name || 'Nova Categoria',
-        image: formData.image || '',
-        status: formData.status as 'Ativo' | 'Inativo'
-      };
-      updateSettings({ categories: [...categories, newCategory] });
+    try {
+      if (editingCategory) {
+        // Edit
+        await saveCategory({
+            ...editingCategory,
+            ...formData
+        } as Category);
+      } else {
+        // Add
+        const newCategory: Category = {
+          id: Date.now(), // Will be ignored/replaced by backend for insert logic heuristic
+          name: formData.name || 'Nova Categoria',
+          image: formData.image || '',
+          status: formData.status as 'Ativo' | 'Inativo'
+        };
+        await saveCategory(newCategory);
+      }
+      
+      await refreshSettings();
+      handleCloseModal();
+    } catch (error) {
+      console.error('Failed to save category:', error);
+      alert('Erro ao salvar categoria');
+    } finally {
+      setIsSaving(false);
     }
-    
-    handleCloseModal();
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm('Tem certeza que deseja excluir esta categoria?')) {
-      const updatedCategories = categories.filter(cat => cat.id !== id);
-      updateSettings({ categories: updatedCategories });
+      try {
+        await deleteCategory(id);
+        await refreshSettings();
+      } catch (error) {
+        console.error('Failed to delete category:', error);
+        alert('Erro ao excluir categoria');
+      }
     }
   };
 
@@ -246,10 +262,11 @@ export const CategoriesPage: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#C92071] text-white font-bold rounded-lg hover:bg-pink-700 transition-colors flex items-center gap-2"
+                  disabled={isSaving}
+                  className="px-4 py-2 bg-[#C92071] text-white font-bold rounded-lg hover:bg-pink-700 transition-colors flex items-center gap-2 disabled:opacity-50"
                 >
                   <Save className="w-4 h-4" />
-                  Salvar
+                  {isSaving ? 'Salvando...' : 'Salvar'}
                 </button>
               </div>
             </form>

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { supabase } from "../services/supabase";
 
 interface SiteSettings {
   siteName: string;
@@ -125,6 +126,7 @@ export interface Slide {
 interface SettingsContextType {
   settings: SiteSettings;
   updateSettings: (newSettings: Partial<SiteSettings>) => void;
+  refreshSettings: () => Promise<void>;
 }
 
 const defaultSettings: SiteSettings = {
@@ -145,106 +147,9 @@ const defaultSettings: SiteSettings = {
     instagramIcon: "/images/icons/Instagram.svg",
     twitterIcon: "/images/icons/Twitter.svg",
   },
-  slides: [
-    {
-      id: 1,
-      subtitle: "Melhores ofertas personalizadas",
-      title: "Queima de estoque Nike 🔥",
-      description:
-        "Consequat culpa exercitation mollit nisi excepteur do do tempor laboris eiusmod irure consectetur.",
-      image: "/images/slides/home-slide-1.jpeg",
-      link: "/products",
-      buttonText: "Ver Ofertas",
-    },
-    {
-      id: 2,
-      subtitle: "Coleção de Verão",
-      title: "Novas Cores e Estilos ☀️",
-      description:
-        "Aproveite o verão com o melhor estilo. Conforto e design exclusivo para você.",
-      image: "/images/slides/home-slide-2.jpeg",
-      link: "/products",
-      buttonText: "Ver Ofertas",
-    },
-    {
-      id: 3,
-      subtitle: "Lançamentos Exclusivos",
-      title: "Tênis para Performance 🏃",
-      description:
-        "Tecnologia de ponta para seus treinos. Supere seus limites com a nova coleção.",
-      image: "/images/slides/home-slide-3.jpeg",
-      link: "/products",
-      buttonText: "Comprar Agora",
-    },
-    {
-      id: 4,
-      subtitle: "Oferta Especial",
-      title: "Descontos de até 50% 🏷️",
-      description:
-        "Não perca as últimas unidades com preços imperdíveis. Garanta já o seu.",
-      image: "/images/slides/home-slide-4.jpeg",
-      link: "/products",
-      buttonText: "Conferir",
-    },
-  ],
-  categories: [
-    {
-      id: 1,
-      name: "Camisetas",
-      image: "/images/icons/camiseta.svg",
-      status: "Ativo",
-    },
-    {
-      id: 2,
-      name: "Calças",
-      image: "/images/icons/calca.svg",
-      status: "Ativo",
-    },
-    {
-      id: 3,
-      name: "Bonés",
-      image: "/images/icons/bone-_2_.svg",
-      status: "Ativo",
-    },
-    {
-      id: 4,
-      name: "Headphones",
-      image: "/images/icons/headphones.svg",
-      status: "Ativo",
-    },
-    {
-      id: 5,
-      name: "Tênis",
-      image: "/images/icons/tenis.svg",
-      status: "Ativo",
-    },
-  ],
-  featuredCollections: [
-    {
-      id: 1,
-      title: "Novo drop Supreme",
-      discount: 30,
-      image: "/images/products/star-wars-storm.png",
-      link: "/products",
-      linkText: "Comprar",
-    },
-    {
-      id: 2,
-      title: "Coleção Adidas",
-      discount: 30,
-      image: "/images/icons/ddd 1.png",
-      link: "/products?brand=Adidas",
-      linkText: "Comprar",
-    },
-    {
-      id: 3,
-      title: "Novo Beats Bass",
-      discount: 30,
-      image: "/images/products/collection-3.png",
-      link: "/products?category=Headphones",
-      linkText: "Comprar",
-    },
-  ],
+  slides: [],
+  categories: [],
+  featuredCollections: [],
   specialOffer: {
     subtitle: "Oferta especial",
     title: "Air Jordan edição de colecionador",
@@ -271,72 +176,11 @@ const defaultSettings: SiteSettings = {
       facebookIcon: "/images/icons/facebookk.svg",
     },
   },
-  orders: [
-    {
-      id: "#12345",
-      customer: "João da Silva",
-      date: "04/02/2026",
-      total: 499.9,
-      status: "Entregue",
-    },
-    {
-      id: "#12346",
-      customer: "Maria Oliveira",
-      date: "03/02/2026",
-      total: 129.5,
-      status: "Enviado",
-    },
-    {
-      id: "#12347",
-      customer: "Pedro Santos",
-      date: "03/02/2026",
-      total: 850.0,
-      status: "Processando",
-    },
-    {
-      id: "#12348",
-      customer: "Ana Costa",
-      date: "02/02/2026",
-      total: 249.9,
-      status: "Cancelado",
-    },
-    {
-      id: "#12349",
-      customer: "Carlos Pereira",
-      date: "01/02/2026",
-      total: 59.9,
-      status: "Entregue",
-    },
-  ],
-  users: [
-    {
-      id: 1,
-      name: "João da Silva",
-      email: "joao@email.com",
-      phone: "(11) 99999-9999",
-      role: "Cliente",
-      status: "Ativo",
-    },
-    {
-      id: 2,
-      name: "Admin User",
-      email: "admin@digitalstore.com",
-      phone: "(11) 98888-8888",
-      role: "Admin",
-      status: "Ativo",
-    },
-    {
-      id: 3,
-      name: "Maria Oliveira",
-      email: "maria@email.com",
-      phone: "(21) 97777-7777",
-      role: "Cliente",
-      status: "Inativo",
-    },
-  ],
+  orders: [],
+  users: [],
   pwa: {
     enabled: false,
-    showInFooter: true, // Default to true
+    showInFooter: true,
     name: "Digital Store",
     shortName: "Digital Store",
     description:
@@ -377,63 +221,66 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const storedSettings = localStorage.getItem("siteSettings_v2");
       if (storedSettings) {
-        const parsedSettings = JSON.parse(storedSettings);
-
-        const mergedSettings = {
-          ...defaultSettings,
-          ...parsedSettings,
-          authPages: parsedSettings.authPages || defaultSettings.authPages,
-          categories: parsedSettings.categories || defaultSettings.categories,
-          featuredCollections:
-            parsedSettings.featuredCollections ||
-            defaultSettings.featuredCollections,
-          specialOffer:
-            parsedSettings.specialOffer || defaultSettings.specialOffer,
-          primaryColor:
-            parsedSettings.primaryColor || defaultSettings.primaryColor,
-          secondaryColor:
-            parsedSettings.secondaryColor || defaultSettings.secondaryColor,
-          pwa: {
-            ...defaultSettings.pwa,
-            ...(parsedSettings.pwa || {}),
-          },
-          footerNavigation:
-            parsedSettings.footerNavigation || defaultSettings.footerNavigation,
-        };
-
-        if (
-          !parsedSettings.authPages ||
-          !parsedSettings.secondaryColor ||
-          !parsedSettings.pwa ||
-          !parsedSettings.footerNavigation
-        ) {
-          localStorage.setItem(
-            "siteSettings_v2",
-            JSON.stringify(mergedSettings),
-          );
-        }
-        return mergedSettings;
+        return { ...defaultSettings, ...JSON.parse(storedSettings) };
       }
     } catch (error) {
       console.error("Error parsing settings:", error);
     }
-
-    localStorage.setItem("siteSettings_v2", JSON.stringify(defaultSettings));
     return defaultSettings;
   });
 
+  const fetchSupabaseData = async () => {
+    try {
+      // Fetch Categories
+      const { data: categories } = await supabase
+        .from("categories")
+        .select("*")
+        .order("id", { ascending: true });
+
+      // Fetch Slides
+      const { data: slides } = await supabase
+        .from("slides")
+        .select("*")
+        .order("created_at", { ascending: true });
+
+      // Fetch Featured Collections
+      const { data: collections } = await supabase
+        .from("featured_collections")
+        .select("*")
+        .order("created_at", { ascending: true });
+
+      setSettings((prev) => {
+        const newSettings = {
+          ...prev,
+          categories: categories || prev.categories,
+          slides: slides?.map((s: any) => ({
+             id: s.id,
+             subtitle: s.subtitle,
+             title: s.title,
+             description: s.description,
+             image: s.image,
+             link: s.link,
+             buttonText: s.button_text
+          })) || prev.slides,
+          featuredCollections: collections?.map((c: any) => ({
+             id: c.id,
+             title: c.title,
+             discount: c.discount,
+             image: c.image,
+             link: c.link,
+             linkText: c.link_text
+          })) || prev.featuredCollections,
+        };
+        localStorage.setItem("siteSettings_v2", JSON.stringify(newSettings));
+        return newSettings;
+      });
+    } catch (error) {
+      console.error("Error fetching settings from Supabase:", error);
+    }
+  };
+
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "siteSettings_v2" && e.newValue) {
-        setSettings(JSON.parse(e.newValue));
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
+    fetchSupabaseData();
   }, []);
 
   const updateSettings = (newSettings: Partial<SiteSettings>) => {
@@ -444,8 +291,12 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  const refreshSettings = async () => {
+    await fetchSupabaseData();
+  };
+
   return (
-    <SettingsContext.Provider value={{ settings, updateSettings }}>
+    <SettingsContext.Provider value={{ settings, updateSettings, refreshSettings }}>
       {children}
     </SettingsContext.Provider>
   );
