@@ -184,7 +184,7 @@ export const UsersPage: React.FC = () => {
         } else {
           const newUser = {
             ...userData,
-            id: `user-${Date.now()}`  keeping consistent
+            id: `user-${Date.now()}`
           };
           const { error } = await supabase
             .from("users")
