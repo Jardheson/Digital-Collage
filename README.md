@@ -33,7 +33,7 @@ Experiência otimizada para dispositivos móveis com navegação simplificada e 
 ### 💻 Desktop View
 Layout responsivo que aproveita o espaço de tela para exibir mais informações e facilitar a navegação por categorias.
 
-<img width="3797" height="1816" alt="Captura de tela 2026-02-06 102523" src="https://github.com/user-attachments/assets/7ab08f3b-a719-43a6-833f-c3137c3b6986" />
+<img width="2760" height="1586" alt="image" src="https://github.com/user-attachments/assets/41089957-0f4a-475d-b64f-05519e390318" />
 
 **Destaques da Interface Desktop:**
 *   **Cabeçalho Expandido:** Barra de busca centralizada, acesso direto a "Minha Conta" e "Meus Pedidos".
